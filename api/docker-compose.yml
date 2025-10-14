@@ -1,0 +1,12 @@
+services:
+  service-postgres:
+    container_name: postgres-db
+    image: postgres:16.8-alpine3.20
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    ports:
+      - 5432:5432
