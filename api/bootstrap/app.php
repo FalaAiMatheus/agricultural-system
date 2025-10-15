@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,9 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->renderable(function (AccessDeniedHttpException $e) {
-            return response()->json([
-                'message' => 'Você não tem permissão'
-            ], 403);
+        $exceptions->renderable(function (HttpException $exception) {
+            if ($exception) {
+                return response()->json([
+                    'message' => 'Você não tem permissão para realizar esta ação.'
+                ], 403);
+            }
+            return false;
         });
     })->create();

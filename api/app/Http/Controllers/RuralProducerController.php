@@ -7,6 +7,7 @@ use Illuminate\Foundation\Exceptions\Renderer\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class RuralProducerController extends Controller
 {
@@ -25,9 +26,9 @@ class RuralProducerController extends Controller
      */
     public function store(Request $request)
     {
-        $authUser = Auth::user();
-
-        $this->authorize('create', $authUser);
+        if (Gate::denies('create')) {
+            abort(403);
+        }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -82,9 +83,9 @@ class RuralProducerController extends Controller
      */
     public function update(Request $request, String $producerId)
     {
-        $authUser = Auth::user();
-
-        $this->authorize('update', $authUser);
+        if (Gate::denies('update')) {
+            abort(403);
+        }
 
         try {
             DB::beginTransaction();
@@ -126,9 +127,9 @@ class RuralProducerController extends Controller
      */
     public function destroy(String $producerId)
     {
-        $authUser = Auth::user();
-
-        $this->authorize('delete', $authUser);
+        if (Gate::denies('delete')) {
+            abort(403);
+        }
 
         $ruralProducer = RuralProducer::find($producerId);
 
