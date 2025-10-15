@@ -13,6 +13,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   { path: "/login", component: Login },
+  { path: "/sign-up", component: () => import("../pages/SignUp.vue") },
 ];
 
 export const router = createRouter({
@@ -25,7 +26,7 @@ router.beforeEach(async (to, _, next) => {
 
   if (to.meta.requiresAuth && !loggedIn) {
     next({ path: "/login" });
-  } else if (to.path === "/login" && loggedIn) {
+  } else if ((to.path === "/login" || to.path === "/sign-up") && loggedIn) {
     next({ path: "/" });
   } else {
     next();
