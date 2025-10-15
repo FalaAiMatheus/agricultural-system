@@ -16,11 +16,12 @@ class Herds extends Model
         'species',
         'quantity',
         'purpose',
-        'update_date'
+        'update_date',
+        'property_id'
     ];
 
     public function properties(): BelongsTo
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Property::class, 'property_id', 'id');
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HerdsController;
 use App\Http\Controllers\ProductionUnitController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\RuralProducerController;
@@ -20,4 +21,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('producers', RuralProducerController::class);
     Route::apiResource('properties', PropertyController::class);
     Route::apiResource('production-units', ProductionUnitController::class);
+    Route::apiResource('herds', HerdsController::class);
 });
