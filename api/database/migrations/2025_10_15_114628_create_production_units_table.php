@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('production_units', function (Blueprint $table) {
             $table->id();
             $table->string('culture_name');
+            $table->foreignId('property_id')->after('culture_name')->constrained('properties')->onDelete('cascade');
             $table->decimal('total_area_ha', 12, 4);
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
