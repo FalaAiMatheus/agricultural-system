@@ -8,13 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Herds extends Model
 {
     /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'property_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

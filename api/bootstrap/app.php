@@ -17,12 +17,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->renderable(function (HttpException $exception) {
-            if ($exception) {
-                return response()->json([
-                    'message' => 'Você não tem permissão para realizar esta ação.'
-                ], 403);
-            }
-            return false;
-        });
+        //
     })->create();

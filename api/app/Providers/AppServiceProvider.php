@@ -15,9 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Gate::before(function (User $user) {
-            return $user->role === "ADMIN";
-        });
+        //
     }
 
     /**
