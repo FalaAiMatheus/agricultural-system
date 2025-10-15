@@ -8,13 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Herds extends Model
 {
     /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'property_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -23,11 +16,12 @@ class Herds extends Model
         'species',
         'quantity',
         'purpose',
-        'update_date'
+        'update_date',
+        'property_id'
     ];
 
     public function properties(): BelongsTo
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Property::class, 'property_id', 'id');
     }
 }

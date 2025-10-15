@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Property extends Model
 {
     /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'producer_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -25,7 +18,8 @@ class Property extends Model
         'municipality',
         'uf',
         'state_registration',
-        'total_area'
+        'total_area',
+        'producer_id'
     ];
 
     public function producer(): BelongsTo
