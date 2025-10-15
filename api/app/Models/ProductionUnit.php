@@ -14,6 +14,7 @@ class ProductionUnit extends Model
      */
     protected $fillable = [
         'culture_name',
+        'property_id',
         'total_area_ha',
         'latitude',
         'longitude',
@@ -21,6 +22,6 @@ class ProductionUnit extends Model
 
     public function properties(): BelongsTo
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Property::class, 'property_id', 'id');
     }
 }
