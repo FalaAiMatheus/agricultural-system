@@ -1,3 +1,5 @@
 <template>
-  <span>Home</span>
+  <section>
+    <span>Welcome</span>
+  </section>
 </template>
