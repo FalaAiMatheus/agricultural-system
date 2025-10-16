@@ -99,7 +99,7 @@ class RuralProducerController extends Controller
                 'email.unique' => 'Email já existe',
             ]);
 
-            $ruralProducer->update([...$validated, 'registration_date' => now()]);
+            $ruralProducer->update($validated);
 
             DB::commit();
 

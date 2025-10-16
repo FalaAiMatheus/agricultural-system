@@ -32,7 +32,7 @@ class PropertyController extends Controller
             'name' => 'required|string|max:255',
             'municipality' => 'required|string|max:255',
             'uf' => 'required|string|max:255',
-            'state_registration' => 'required|integer|max:255',
+            'state_registration' => 'required|integer',
             'total_area' => 'required',
             'producer_id' => 'required|integer',
         ], [
@@ -94,7 +94,7 @@ class PropertyController extends Controller
                 'name' => 'nullable|string|max:255',
                 'municipality' => 'nullable|string|max:255',
                 'uf' => 'nullable|string|max:255',
-                'state_registration' => 'nullable|integer|max:255',
+                'state_registration' => 'nullable|integer',
                 'total_area' => 'nullable',
                 'producer_id' => 'nullable|integer',
             ]);
