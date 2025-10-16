@@ -2,7 +2,7 @@
   <Dialog
     v-model:visible="props.visible"
     modal
-    :header="`Editar propriedade ${props.propertyData?.name}`"
+    :header="`Editar rebanho ${props.herdsData?.species}`"
     :style="{ width: '25rem' }"
   >
     <Form
@@ -13,86 +13,33 @@
       class="flex flex-col gap-4 w-full"
     >
       <div class="flex flex-col gap-1">
-        <InputText
-          v-model="initialValues.name"
-          name="name"
-          type="text"
-          placeholder="Nome"
-          fluid
-        />
+        <InputText name="species" type="text" placeholder="Nome" fluid />
         <Message
-          v-if="$form.name?.invalid"
+          v-if="$form.species?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.name?.error.message }}</Message
+          >{{ $form.species?.error.message }}</Message
         >
       </div>
       <div class="flex flex-col gap-1">
-        <InputText name="municipality" type="text" placeholder="Email" fluid />
+        <InputNumber name="quantity" placeholder="Quantidade" fluid />
         <Message
-          v-if="$form.municipality?.invalid"
+          v-if="$form.quantity?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.municipality?.error.message }}</Message
+          >{{ $form.quantity?.error.message }}</Message
         >
       </div>
       <div class="flex flex-col gap-1">
-        <InputMask
-          name="state_registration"
-          mask="999999999"
-          placeholder="999999999"
-          fluid
-        />
+        <Textarea name="purpose" rows="5" cols="30" style="resize: none" />
         <Message
-          v-if="$form.state_registration?.invalid"
+          v-if="$form.purpose?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.state_registration?.error.message }}</Message
-        >
-      </div>
-      <div class="flex flex-col gap-1">
-        <InputText name="uf" type="text" placeholder="UF" fluid />
-        <Message
-          v-if="$form.uf?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.uf?.error.message }}</Message
-        >
-      </div>
-      <div class="flex flex-col gap-1">
-        <Select
-          name="producer"
-          :options="ruralProducers"
-          optionLabel="name"
-          optionValue="id"
-          placeholder="Selecione o Produtor rural"
-          fluid
-        />
-        <Message
-          v-if="$form.producer?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.producer?.error?.message }}</Message
-        >
-      </div>
-      <div class="flex flex-col gap-1">
-        <InputText
-          name="total_area"
-          type="text"
-          placeholder="total_area"
-          fluid
-        />
-        <Message
-          v-if="$form.total_area?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.total_area?.error.message }}</Message
+          >{{ $form.purpose.error?.message }}</Message
         >
       </div>
       <div class="flex justify-end gap-2">
@@ -114,17 +61,17 @@ import { zodResolver } from "@primevue/forms/resolvers/zod";
 import {
   Button,
   Dialog,
-  InputMask,
+  InputNumber,
   InputText,
   Message,
-  Select,
+  Textarea,
   useToast,
 } from "primevue";
 import { defineProps, onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import { getModifiedFields } from "../../../../core/utils";
-import { updateProperty } from "../../../../services/properties";
-import { getAllRuralProducers } from "../../../../services/rural-producers";
+import { updateHerd } from "../../../../services/herds";
+import { getAllProperties } from "../../../../services/properties";
 
 const props = defineProps({
   visible: {
@@ -135,34 +82,28 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  propertyData: {
+  herdsData: {
     type: Object,
     default: null,
   },
 });
-const ruralProducers = ref();
+const properties = ref();
 
 const initialValues = ref({
-  name: "",
-  municipality: "",
-  uf: "",
-  state_registration: "",
-  total_area: "",
-  producer: { id: "" },
+  species: "",
+  quantity: 0,
+  purpose: "",
 });
 const originalValues = ref({});
 
 watch(
-  () => props.propertyData,
+  () => props.herdsData,
   (newData) => {
     if (newData) {
       initialValues.value = {
-        name: newData.name ?? "",
-        municipality: newData.municipality ?? "",
-        uf: newData.uf ?? "",
-        state_registration: newData.state_registration ?? "",
-        total_area: newData.total_area ?? "",
-        producer: { id: newData.producer?.id ?? "" },
+        species: newData.species ?? "",
+        quantity: newData.quantity ?? 0,
+        purpose: newData.purpose ?? "",
       };
       originalValues.value = { ...initialValues.value };
     }
@@ -173,25 +114,20 @@ const toast = useToast();
 
 const resolver = zodResolver(
   z.object({
-    name: z.string().optional(),
-    municipality: z.string().optional(),
-    uf: z.string().optional(),
-    state_registration: z.string().optional(),
-    total_area: z.string().optional(),
-    producer: z.object({
-      id: z.number().min(1, "Produtor rural é obrigatório"),
-    }),
+    species: z.string().optional(),
+    quantity: z.number().optional(),
+    purpose: z.string().optional(),
   })
 );
 
 onMounted(() => {
-  getAllRuralProducers().then(({ data }) => (ruralProducers.value = data));
+  getAllProperties().then(({ data }) => (properties.value = data));
 });
 
 const onFormSubmit = async (e) => {
   if (!e.valid) return;
 
-  const modifiedValues = getModifiedFields(e.values, props.propertyData);
+  const modifiedValues = getModifiedFields(e.values, props.herdsData);
 
   if (Object.keys(modifiedValues).length === 0) {
     toast.add({
@@ -203,7 +139,7 @@ const onFormSubmit = async (e) => {
   }
 
   try {
-    const res = await updateProperty(modifiedValues, props.propertyData.id);
+    const res = await updateHerd(modifiedValues, props.herdsData.id);
     toast.add({
       severity: "success",
       life: 3000,

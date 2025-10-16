@@ -1,9 +1,9 @@
 <template>
-  <Button label="Criar propriedade" @click="visible = true" />
+  <Button label="Criar rebanho" @click="visible = true" />
   <Dialog
     v-model:visible="visible"
     modal
-    header="Criar propriedade"
+    header="Criar rebanho"
     :style="{ width: '25rem' }"
   >
     <Form
@@ -14,85 +14,50 @@
       class="flex flex-col gap-4 w-full"
     >
       <div class="flex flex-col gap-1">
-        <InputText name="name" type="text" placeholder="Nome" fluid />
+        <InputText name="species" type="text" placeholder="Especie" fluid />
         <Message
-          v-if="$form.name?.invalid"
+          v-if="$form.species?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.name?.error.message }}</Message
+          >{{ $form.species?.error.message }}</Message
         >
       </div>
       <div class="flex flex-col gap-1">
-        <InputMask
-          name="state_registration"
-          mask="999999999"
-          placeholder="999999999"
-          fluid
-        />
+        <InputNumber name="quantity" placeholder="Quantidade" fluid />
         <Message
-          v-if="$form.state_registration?.invalid"
+          v-if="$form.quantity?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.state_registration?.error.message }}</Message
+          >{{ $form.quantity.error?.message }}</Message
         >
       </div>
       <div class="flex flex-col gap-1">
         <Select
-          name="producer.id"
-          :options="ruralProducers"
+          name="property.id"
+          :options="properties"
           optionLabel="name"
           optionValue="id"
-          placeholder="Selecione o Produtor rural"
+          placeholder="Selecione a propriedade"
           fluid
         />
         <Message
-          v-if="$form.producer?.invalid"
+          v-if="$form.property?.id?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.producer?.error?.message }}</Message
+          >{{ $form.property?.id?.error?.message }}</Message
         >
       </div>
       <div class="flex flex-col gap-1">
-        <InputText name="uf" type="text" placeholder="UF" fluid />
+        <Textarea name="purpose" rows="5" cols="30" style="resize: none" />
         <Message
-          v-if="$form.uf?.invalid"
+          v-if="$form.purpose?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.uf?.error.message }}</Message
-        >
-      </div>
-      <div class="flex flex-col gap-1">
-        <InputText
-          name="total_area"
-          type="text"
-          placeholder="Area total"
-          fluid
-        />
-        <Message
-          v-if="$form.total_area?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.total_area?.error.message }}</Message
-        >
-      </div>
-      <div class="flex flex-col gap-1">
-        <InputText
-          name="municipality"
-          type="text"
-          placeholder="Município"
-          fluid
-        />
-        <Message
-          v-if="$form.municipality?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.municipality?.error.message }}</Message
+          >{{ $form.purpose.error?.message }}</Message
         >
       </div>
       <div class="flex justify-end gap-2">
@@ -114,51 +79,48 @@ import { zodResolver } from "@primevue/forms/resolvers/zod";
 import {
   Button,
   Dialog,
-  InputMask,
+  InputNumber,
   InputText,
   Message,
   Select,
+  Textarea,
   useToast,
 } from "primevue";
 import { onMounted, ref } from "vue";
 import { z } from "zod";
-import { createProperty } from "../../../../services/properties";
-import { getAllRuralProducers } from "../../../../services/rural-producers";
+import { createHerd } from "../../../../services/herds";
+import { getAllProperties } from "../../../../services/properties";
 
 const visible = ref(false);
 const initialValues = ref({
-  name: "",
-  municipality: "",
-  uf: "",
-  state_registration: "",
-  total_area: "",
-  producer: { id: "" },
+  species: "",
+  quantity: 0,
+  purpose: "",
+  property: { id: undefined },
 });
 const toast = useToast();
-const ruralProducers = ref();
+const properties = ref();
 
 const resolver = zodResolver(
   z.object({
-    name: z.string().min(1, "Nome é obrigatório"),
-    municipality: z.string().min(1, "Município é obrigatório"),
-    uf: z.string().min(1, "UF é obrigatório"),
-    state_registration: z.string().min(1, "Registro estadual é obrigatório"),
-    total_area: z.string().min(1, "Área total é obrigatória"),
-    producer: z.object({
-      id: z.number().min(1, "Produtor rural é obrigatório"),
+    species: z.string().min(1, "Especie é obrigatório"),
+    quantity: z.number().min(1, "Quantidade é obrigatória"),
+    purpose: z.string().min(1, "Finalidade é obrigatório"),
+    property: z.object({
+      id: z.number().min(1, "Propriedade é obrigatória"),
     }),
   })
 );
 
 onMounted(() => {
-  getAllRuralProducers().then(({ data }) => (ruralProducers.value = data));
+  getAllProperties().then(({ data }) => (properties.value = data));
 });
 
 const onFormSubmit = async (e: any) => {
   if (e.valid) {
-    createProperty({
+    createHerd({
       ...e.values,
-      producer_id: e.values.producer.id,
+      property_id: e.values.property.id,
     })
       .then((res) => {
         toast.add({

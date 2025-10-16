@@ -10,19 +10,12 @@
       v-model:filters="filters"
       dataKey="id"
       filterDisplay="row"
-      v-model:selection="selectedProperties"
+      v-model:selection="selectedHerds"
       selectionMode="single"
       :metaKeySelection="metaKey"
       :loading="loading"
-      :globalFilterFields="[
-        'name',
-        'municipality',
-        'uf',
-        'state_registration',
-        'total_area',
-        'producer_id',
-      ]"
-      :value="properties"
+      :globalFilterFields="['species', 'quantity', 'purpose', 'update_date']"
+      :value="herds"
       paginator
       :rows="5"
       showGridlines
@@ -40,18 +33,21 @@
           <CreateForm />
         </div>
       </template>
-      <template #empty>Nenhuma propriedade encontrada</template>
+      <template #empty>Nenhuma rebanho encontrada</template>
       <template #loading>
         <div class="flex items-center flex-col gap-2">
           <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-          <span> Carregando as propriedades. Aguarde...</span>
+          <span> Carregando os rebanhos. Aguarde...</span>
         </div>
       </template>
-      <Column field="name" header="Nome"> </Column>
-      <Column field="municipality" header="Município"></Column>
-      <Column field="uf" header="UF"></Column>
-      <Column field="state_registration" header="Inscrição estadual"></Column>
-      <Column field="total_area" header="Area total"></Column>
+      <Column field="species" header="Nome"> </Column>
+      <Column field="quantity" header="Quantidade"></Column>
+      <Column field="purpose" header="Finalidade"></Column>
+      <Column field="update_date" header="Data de atualização" dataType="date">
+        <template #body="{ data }">
+          {{ formatDate(data.update_date) }}
+        </template>
+      </Column>
       <Column
         headerStyle="width: 5rem; text-align: center"
         bodyStyle="text-align: center; overflow: visible"
@@ -69,7 +65,7 @@
     <UpdateForm
       :visible="displayModal"
       :handleCloseModal="handleCloseModal"
-      :propertyData="selectedProperties"
+      :herdsData="selectedHerds"
     />
   </div>
 </template>
@@ -89,44 +85,41 @@ import {
   useToast,
 } from "primevue";
 import { onMounted, ref, watch } from "vue";
-import {
-  deleteProperty,
-  getAllProperties,
-} from "../../../../services/properties";
+import { deleteHerd, getAllHerds } from "../../../../services/herds";
 import CreateForm from "./CreateForm.vue";
 import UpdateForm from "./UpdateForm.vue";
 
 const loading = ref(true);
-const properties = ref([]);
-const selectedProperties = ref();
+const herds = ref([]);
+const selectedHerds = ref();
 const metaKey = ref(true);
 const toast = useToast();
 const displayModal = ref(false);
 const confirm = useConfirm();
 
-watch(selectedProperties, (newValue) => {
+watch(selectedHerds, (newValue) => {
   if (newValue) {
     displayModal.value = true;
   }
 });
 
-const confirmDelete = (property) => {
+const confirmDelete = (herd) => {
   confirm.require({
-    message: `Deseja realmente deletar ${property.name}?`,
+    message: `Deseja realmente deletar ${herd.species}?`,
     header: "Confirmação",
     icon: "pi pi-exclamation-triangle",
     accept: async () => {
       try {
-        const { message } = await deleteProperty(property.id);
+        const { message } = await deleteHerd(herd.id);
         toast.add({
           severity: "success",
           summary: message,
         });
-        properties.value = properties.value.filter((p) => p.id !== property.id);
+        herds.value = herds.value.filter((p) => p.id !== herd.id);
       } catch (error) {
         toast.add({
           severity: "error",
-          summary: "Falha ao deletar a propriedade",
+          summary: "Falha ao deletar o rebanho",
         });
       }
     },
@@ -135,31 +128,24 @@ const confirmDelete = (property) => {
 
 const handleCloseModal = () => (displayModal.value = false);
 
+"species", "quantity", "purpose", "update_date";
 const filters = ref({
   global: { value: null, matchMode: "contains" },
-  name: {
+  species: {
     value: null,
     matchMode: "contains",
   },
-  municipality: {
+  quantity: {
     value: null,
     matchMode: "starts_with",
   },
-  uf: {
+  purpose: {
     value: null,
     matchMode: "starts_with",
   },
-  state_registration: {
+  update_date: {
     value: null,
     matchMode: "starts_with",
-  },
-  total_area: {
-    value: null,
-    matchMode: "starts_with",
-  },
-  producer_id: {
-    value: null,
-    matchMode: "date_is",
   },
 });
 
@@ -173,9 +159,9 @@ const formatDate = (value) => {
 
 onMounted(async () => {
   try {
-    const { data } = await getAllProperties();
+    const { data } = await getAllHerds();
     loading.value = false;
-    properties.value = data;
+    herds.value = data;
   } catch (error) {
     toast.add({
       severity: "error",

@@ -1,28 +1,27 @@
 import { api } from "../core/api";
 import type { ApiResponse } from "../core/types/api";
 
-export type RuralProducer = {
+export type Herd = {
   id: number;
-  name: string;
-  document: string;
-  telephone: string;
-  email: string;
-  address: string;
-  registration_date: string;
+  species: string;
+  quantity: number;
+  purpose: string;
+  update_date: string;
+  property_id: number;
 };
 
-export const getAllRuralProducers = async () => {
-  const { data } = await api<{ data: RuralProducer[] }>({
-    endpoint: "/producers",
+export const getAllHerds = async () => {
+  const { data } = await api<{ data: Herd[] }>({
+    endpoint: "/herds",
     method: "GET",
   });
 
   return { data };
 };
 
-export const createRuralProducer = async (data: Omit<RuralProducer, "id">) => {
+export const createHerd = async (data: Omit<Herd, "id">) => {
   const { message } = await api<ApiResponse>({
-    endpoint: "/producers",
+    endpoint: "/herds",
     method: "POST",
     body: data,
   });
@@ -30,12 +29,9 @@ export const createRuralProducer = async (data: Omit<RuralProducer, "id">) => {
   return { message };
 };
 
-export const updateRuralProducer = async (
-  data: Omit<RuralProducer, "id">,
-  id: string
-) => {
+export const updateHerd = async (data: Omit<Herd, "id">, id: string) => {
   const { message } = await api<ApiResponse>({
-    endpoint: `/producers/${id}`,
+    endpoint: `/herds/${id}`,
     method: "PATCH",
     body: data,
   });
@@ -43,9 +39,9 @@ export const updateRuralProducer = async (
   return { message };
 };
 
-export const deleteRuralProducer = async (id: string) => {
+export const deleteHerd = async (id: string) => {
   const { message } = await api<ApiResponse>({
-    endpoint: `/producers/${id}`,
+    endpoint: `/herds/${id}`,
     method: "DELETE",
   });
 
