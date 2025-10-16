@@ -115,7 +115,7 @@ const onFormSubmit = async (e: any) => {
       toast.add({
         severity: "success",
         life: 3000,
-        summary: res.access_token,
+        summary: "Seja bem vindo novamente!",
       });
       router.push("/");
     })
