@@ -76,6 +76,13 @@ const items = ref([
     },
   },
   {
+    label: "Propriedades",
+    icon: "pi pi-map",
+    command: () => {
+      router.push("/properties");
+    },
+  },
+  {
     label: "Unidades de produção",
     icon: "pi pi-barcode",
     command: () => {
@@ -87,13 +94,6 @@ const items = ref([
     icon: "pi pi-tags",
     command: () => {
       router.push("/herds");
-    },
-  },
-  {
-    label: "Propriedades",
-    icon: "pi pi-map",
-    command: () => {
-      router.push("/properties");
     },
   },
 ]);
