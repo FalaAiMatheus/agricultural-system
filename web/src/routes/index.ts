@@ -1,19 +1,28 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import Login from "../pages/Login.vue";
+import { getAuthToken } from "../services/get-auth-token";
 
-async function getAuthToken() {
-  const token = await cookieStore.get("auth_token");
-  return !!token?.value;
-}
-
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     component: () => import("../pages/Home.vue"),
     meta: { requiresAuth: true },
   },
-  { path: "/login", component: Login },
-  { path: "/sign-up", component: () => import("../pages/SignUp.vue") },
+  { path: "/login", component: Login, meta: { guestOnly: true } },
+  {
+    path: "/sign-up",
+    component: () => import("../pages/SignUp.vue"),
+    meta: { guestOnly: true },
+  },
+  {
+    path: "/rural-producers",
+    component: () => import("../pages/RuralProducers.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 export const router = createRouter({
@@ -26,7 +35,7 @@ router.beforeEach(async (to, _, next) => {
 
   if (to.meta.requiresAuth && !loggedIn) {
     next({ path: "/login" });
-  } else if ((to.path === "/login" || to.path === "/sign-up") && loggedIn) {
+  } else if (to.meta.guestOnly && loggedIn) {
     next({ path: "/" });
   } else {
     next();

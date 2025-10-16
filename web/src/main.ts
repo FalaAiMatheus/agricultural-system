@@ -1,6 +1,6 @@
 import Aura from "@primeuix/themes/aura";
 import "primeicons/primeicons.css";
-import { ToastService } from "primevue";
+import { ConfirmationService, ToastService } from "primevue";
 import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -15,5 +15,6 @@ app.use(PrimeVue, {
 });
 app.use(router);
 app.use(ToastService);
+app.use(ConfirmationService);
 
 app.mount("#app");

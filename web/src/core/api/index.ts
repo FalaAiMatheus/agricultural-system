@@ -1,4 +1,5 @@
 import { env } from "../../env";
+import { getAuthToken } from "../../services/get-auth-token";
 
 export type ApiProps = {
   endpoint: string;
@@ -12,21 +13,25 @@ export async function api<TResponse = unknown>({
   body,
 }: ApiProps) {
   const apiUrl = env.data?.VITE_API_URL;
+  const apiToken = await getAuthToken();
 
   const response = await fetch(`${apiUrl}${endpoint}`, {
     method: method ?? "GET",
+    headers: {
+      Authorization: `Bearer ${apiToken}`,
+      Accept: "application/json",
+      ...(method === "POST" || method === "PATCH"
+        ? { "Content-Type": "application/json" }
+        : {}),
+    },
     ...(method === "POST" || method === "PATCH"
-      ? {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
+      ? { body: JSON.stringify(body) }
       : {}),
   });
 
   if (!response.ok) {
-    throw new Error("Credencias inválidas");
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro desconhecido");
   }
 
   const json = (await response.json()) as TResponse;
