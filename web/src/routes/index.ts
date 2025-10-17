@@ -38,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../pages/HerdsPage.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/reports",
+    component: () => import("../components/features/reports/Reports.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 export const router = createRouter({
