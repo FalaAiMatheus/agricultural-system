@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/reports",
-    component: () => import("../components/features/reports/Reports.vue"),
+    component: () => import("../pages/ReportsPage.vue"),
     meta: { requiresAuth: true },
   },
 ];
