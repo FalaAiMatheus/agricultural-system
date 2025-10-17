@@ -1,6 +1,7 @@
 <template>
   <header>
     <Menubar
+      v-if="authStore.isAuthenticated"
       class="justify-between !px-4 !rounded-none !bg-transparent !border-0 !border-b"
       :model="items"
     >
@@ -55,10 +56,16 @@
 
 <script setup>
 import { Menubar } from "primevue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
+import { useAuthStore } from "./stores/auth";
 
 const router = useRouter();
+const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.loadToken();
+});
 
 const items = ref([
   {
@@ -94,6 +101,21 @@ const items = ref([
     icon: "pi pi-tags",
     command: () => {
       router.push("/herds");
+    },
+  },
+  {
+    label: "Relatórios",
+    icon: "pi pi-table",
+    command: () => {
+      router.push("/reports");
+    },
+  },
+  {
+    label: "Sair",
+    icon: "pi pi-sign-out",
+    command: () => {
+      authStore.clearToken();
+      router.push("/login");
     },
   },
 ]);
