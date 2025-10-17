@@ -35,11 +35,43 @@ Copie o .env.example e adicione os valores nas variaveis a seguir
 
 `DB_USERNAME=nome_do_user`
 
-`DB_PASSWORD==senha`
+`DB_PASSWORD=senha`
 
 **Lembrando tem que ser os mesmos valores do /conf/postgres/**
 
-Após isso entre dentro do container do PHP usando o comando
+Agora pra configurar pra gerar PDF é necessário alterar essas variáveis
+
+`BROWSERSHOT_NODE_BINARY="`
+
+`BROWSERSHOT_NPM_BINARY=`
+
+`BROWSERSHOT_CHROME_PATH=`
+
+Por padrão os valores estarão como
+
+`BROWSERSHOT_NODE_BINARY='/root/.nvm/versions/node/v22.20.0/bin/node'`
+
+`BROWSERSHOT_NPM_BINARY='/root/.nvm/versions/node/v22.20.0/bin/npm'`
+
+Já o Chrome Path é necessário que você entre no container php (abaixo o comando)
+
+E baixe os seguintes pacotes
+
+```bash
+    docker exec -it service-php bash
+    npm i
+    npx puppeteer browsers install chrome
+```
+
+Após isso ele vai retornar algo como
+
+```bash
+   '/root/.cache/puppeteer/chrome/...'
+```
+
+Basta copiar e colocar no `BROWSERSHOT_CHROME_PATH`
+
+Após isso entre dentro do container do PHP usando o mesmo comando acima comando
 
 ```bash
     docker exec -it service-php bash
@@ -58,6 +90,8 @@ Agora no ambiente web **(front)** você precisara copiar o .env.example e coloca
 `VITE_API_URL="http://localhost:8000/api"`
 
 Com tudo isso pronto, você já estará rodando seu ambiente 100% 😎
+
+Agora basta entrar em http://localhost:5173/
 
 ## Stack utilizada
 
