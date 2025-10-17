@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HerdsController;
 use App\Http\Controllers\ProductionUnitController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\Reports\HerdsReportController;
+use App\Http\Controllers\Reports\PropertiesReportController;
 use App\Http\Controllers\RuralProducerController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('properties', PropertyController::class);
     Route::apiResource('production-units', ProductionUnitController::class);
     Route::apiResource('herds', HerdsController::class);
+    Route::prefix('/reports')->group(function () {
+        Route::get('/properties', PropertiesReportController::class);
+        Route::get('/herds/{id}', HerdsReportController::class);
+    });
 });

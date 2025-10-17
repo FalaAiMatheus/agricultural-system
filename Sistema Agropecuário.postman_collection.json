@@ -1,0 +1,680 @@
+{
+	"info": {
+		"_postman_id": "7cb7d760-2e6f-4e2d-a04b-3a789653f837",
+		"name": "Sistema Agropecuário",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34569827"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// Admin\r\n{\r\n    \"name\": \"Matheus Admin\",\r\n    \"role\": \"ADMIN\",\r\n    \"email\": \"matheus_admin@example.com\",\r\n    \"password\": \"12345678\"\r\n}\r\n// Guest\r\n/*{\r\n    \"name\": \"Matheus Guest\",\r\n    \"role\": \"GUEST\",\r\n    \"email\": \"matheus_guest@example.com\",\r\n    \"password\": \"12345678\"\r\n}*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "1|obpXD1ZsaVPq6JWoEsIt81QH5WywExvHVwKadpgA977c6c7d"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"matheus\",\r\n    \"email\": \"matheusss7@example.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"matheus_admin@example.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Auth User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "{{API_URL}}/auth/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rural Producers",
+			"item": [
+				{
+					"name": "Get Rural Producer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/producers/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rural Producer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/producers/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Rural Producers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/producers"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rural Producer",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jose\",\r\n    \"document\": \"328.233.560-10\",\r\n    \"email\": \"jose_rural02@example.com\",\r\n    \"telephone\": \"(85) 98131-81110\",\r\n    \"address\": \"Rua das Arvores, 110, Jardim das Florestas, Cidade, UF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/producers"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Rural Producer",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": \"Rua das Madeiras, 110, Jardim das Florestas, Cidade, UF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/producers/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Property",
+			"item": [
+				{
+					"name": "Get Property",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/properties/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Property",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/properties/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Properties",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/properties"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Property",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Propriedade do Matheus\",\r\n    \"municipality\": \"Fortaleza\",\r\n    \"uf\": \"CE\",\r\n    \"state_registration\": 146,\r\n    \"total_area\": 200.5,\r\n    \"producer_id\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/properties"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Property",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Propriedade do Matheus Oficial\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/properties/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Production Unit",
+			"item": [
+				{
+					"name": "Get Production Unit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/production-units/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Production Unit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/production-units/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Production Units",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/production-units"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Production Unit",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"culture_name\": \"Laranja Pera\",\r\n  \"property_id\": 2,\r\n  \"total_area_ha\": 12.3456,\r\n  \"latitude\": -21.17654321,\r\n  \"longitude\": -47.80612345\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/production-units"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Production Unit",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"culture_name\": \"Goiaba Paluma\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/production-units/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Herds",
+			"item": [
+				{
+					"name": "Get Herd",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/herds/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Herd",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/herds/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Herds",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/herds"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Herd",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"species\": \"Suínos\",\r\n  \"property_id\": 2,\r\n  \"quantity\": 200,\r\n  \"purpose\": \"Criação\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/herds"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Herd",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"quantity\": 400\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/herds/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Get all herds",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/reports/herds/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all properties Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{API_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/reports/properties"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"let jsonData = pm.response.json();\r",
+					"\r",
+					"pm.environment.set(\"API_TOKEN\", jsonData.access_token); "
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": ""
+		},
+		{
+			"key": "API_TOKEN",
+			"value": ""
+		}
+	]
+}

@@ -66,6 +66,14 @@
         bodyStyle="text-align: center; overflow: visible"
       >
         <template #body="{ data }">
+          <ReportPdf :herdId="data.id" />
+        </template>
+      </Column>
+      <Column
+        headerStyle="width: 5rem; text-align: center"
+        bodyStyle="text-align: center; overflow: visible"
+      >
+        <template #body="{ data }">
           <Button
             @click="confirmDelete(data)"
             severity="danger"
@@ -103,6 +111,7 @@ import {
   getAllRuralProducers,
 } from "../../../../services/rural-producers";
 import CreateForm from "./CreateForm.vue";
+import ReportPdf from "./ReportPdf.vue";
 import UpdateForm from "./UpdateForm.vue";
 
 const loading = ref(true);

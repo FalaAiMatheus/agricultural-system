@@ -1,5 +1,6 @@
 import { api } from "../core/api";
 import type { ApiResponse } from "../core/types/api";
+import type { Properties } from "./properties";
 
 export type ProductionUnit = {
   id: number;
@@ -8,6 +9,7 @@ export type ProductionUnit = {
   total_area_ha: string;
   latitude: string;
   longitude: string;
+  properties?: Properties;
 };
 
 export const getAllProductionUnits = async () => {

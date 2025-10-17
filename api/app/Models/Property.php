@@ -24,7 +24,7 @@ class Property extends Model
 
     public function producer(): BelongsTo
     {
-        return $this->belongsTo(RuralProducer::class);
+        return $this->belongsTo(RuralProducer::class, 'producer_id');
     }
 
     public function productionUnit(): HasMany

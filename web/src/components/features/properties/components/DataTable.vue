@@ -38,6 +38,7 @@
             <InputText v-model="filters['global'].value" placeholder="Buscar" />
           </IconField>
           <CreateForm />
+          <ReportExcel />
         </div>
       </template>
       <template #empty>Nenhuma propriedade encontrada</template>
@@ -94,6 +95,7 @@ import {
   getAllProperties,
 } from "../../../../services/properties";
 import CreateForm from "./CreateForm.vue";
+import ReportExcel from "./ReportExcel.vue";
 import UpdateForm from "./UpdateForm.vue";
 
 const loading = ref(true);
