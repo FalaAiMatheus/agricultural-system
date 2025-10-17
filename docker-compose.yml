@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: ./conf/docker/node/Dockerfile
     ports:
-      - "4173:4173"
+      - "5173:5173"
     volumes:
       - ./web:/app/web
     env_file:

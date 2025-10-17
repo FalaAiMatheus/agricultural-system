@@ -5,8 +5,8 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), tailwindcss()],
-  preview: {
+  server: {
     host: "0.0.0.0",
-    port: 4173,
+    port: 5173,
   },
 });
