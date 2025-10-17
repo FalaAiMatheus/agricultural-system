@@ -35,7 +35,7 @@
       </div>
       <div class="flex flex-col gap-1">
         <Select
-          name="property.id"
+          name="property_id"
           :options="properties"
           optionLabel="name"
           optionValue="id"
@@ -43,11 +43,11 @@
           fluid
         />
         <Message
-          v-if="$form.property?.id?.invalid"
+          v-if="$form.property_id?.invalid"
           severity="error"
           size="small"
           variant="simple"
-          >{{ $form.property?.id?.error?.message }}</Message
+          >{{ $form.property_id?.error?.message }}</Message
         >
       </div>
       <div class="flex flex-col gap-1">
@@ -96,7 +96,7 @@ const initialValues = ref({
   species: "",
   quantity: 0,
   purpose: "",
-  property: { id: undefined },
+  property_id: null,
 });
 const toast = useToast();
 const properties = ref();
@@ -106,9 +106,7 @@ const resolver = zodResolver(
     species: z.string().min(1, "Especie é obrigatório"),
     quantity: z.number().min(1, "Quantidade é obrigatória"),
     purpose: z.string().min(1, "Finalidade é obrigatório"),
-    property: z.object({
-      id: z.number().min(1, "Propriedade é obrigatória"),
-    }),
+    property_id: z.number().min(1, "Propriedade é obrigatória"),
   })
 );
 
@@ -118,10 +116,7 @@ onMounted(() => {
 
 const onFormSubmit = async (e: any) => {
   if (e.valid) {
-    createHerd({
-      ...e.values,
-      property_id: e.values.property.id,
-    })
+    createHerd(e.values)
       .then((res) => {
         toast.add({
           severity: "success",
