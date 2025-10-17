@@ -128,7 +128,6 @@ const confirmDelete = (herd) => {
 
 const handleCloseModal = () => (displayModal.value = false);
 
-"species", "quantity", "purpose", "update_date";
 const filters = ref({
   global: { value: null, matchMode: "contains" },
   species: {
