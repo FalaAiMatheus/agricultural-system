@@ -1,0 +1,40 @@
+services:
+  service-php:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./conf/docker/php/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - internal
+
+  service-postgres:
+    container_name: postgres-db
+    image: postgres:16.8-alpine3.20
+    env_file:
+      - ./conf/docker/postgres/.env
+    ports:
+      - 5432:5432
+    networks:
+      - internal
+
+  service-node:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./conf/docker/node/Dockerfile
+    ports:
+      - "4173:4173"
+    volumes:
+      - ./web:/app/web
+    env_file:
+      - ./web/.env
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
