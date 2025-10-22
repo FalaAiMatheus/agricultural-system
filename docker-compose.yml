@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/var/www/html
+      - /var/www/html/api/vendor
     networks:
       - internal
 
@@ -30,6 +31,7 @@ services:
       - "5173:5173"
     volumes:
       - ./web:/app/web
+      - /app/web/node_modules
     env_file:
       - ./web/.env
     networks:

@@ -2,11 +2,11 @@
 
 ## 🚀 Visão Geral
 
-Sistema completo de gestão agropecuária utilizando **Laravel (backend)** e **Vue**, com containerização com Docker e geração de relatórios exportáveis.
+Sistema completo de gestão agropecuária utilizando **Laravel (backend)** e **Vue**, com conteinerização com Docker e geração de relatórios exportáveis.
 
 ## Instalação
 
-Primeiro clone o repositorio
+Primeiro clone o repositório
 
 ```bash
   git clone https://github.com/FalaAiMatheus/agricultural-system.git
@@ -15,17 +15,19 @@ Primeiro clone o repositorio
 
 Após isso é necessário que você possua o **Docker**, caso não tenha pode ir na documentação oficial _(https://docs.docker.com/engine/install/)_.
 
-Mas antes de rodar esse comando é necessário que você vá na pasta /conf/postgres e clone o .env.example e coloque as informações para que o container do banco seja rodado.
+## Configuração do banco de dados
 
-```bash
-    docker compose up -d
-```
+Antes de subir os containers, vá até a pasta /conf/postgres e:
 
-Para rodar o ambiente você precisara primeiro configurar as variaveis ambiente.
+- Copie o arquivo .env.example para .env.
+
+- Edite as variáveis de ambiente conforme o seu ambiente.
+
+- Para rodar o ambiente você precisara primeiro configurar as variáveis ambiente.
 
 Primeiro no ambiente **PHP**
 
-Copie o .env.example e adicione os valores nas variaveis a seguir
+No diretório /api, copie o .env.example para .env e configure as variáveis:
 
 `DB_HOST="postgres-db"`
 
@@ -39,7 +41,13 @@ Copie o .env.example e adicione os valores nas variaveis a seguir
 
 **Lembrando tem que ser os mesmos valores do /conf/postgres/**
 
-Agora pra configurar pra gerar PDF é necessário alterar essas variáveis
+Agora no ambiente web **(front)** você precisara copiar o .env.example e colocar a seguinte variável
+
+No diretório /web, copie o .env.example para .env e adicione:
+
+`VITE_API_URL="http://localhost:8000/api"`
+
+Edite as variáveis de ambiente no .env do PHP:
 
 `BROWSERSHOT_NODE_BINARY="`
 
@@ -58,7 +66,7 @@ Já o Chrome Path é necessário que você entre no container php (abaixo o coma
 E baixe os seguintes pacotes
 
 ```bash
-    docker exec -it service-php bash
+    docker exec -it api bash
     npm i
     npx puppeteer browsers install chrome
 ```
@@ -74,24 +82,22 @@ Basta copiar e colocar no `BROWSERSHOT_CHROME_PATH`
 Após isso entre dentro do container do PHP usando o mesmo comando acima comando
 
 ```bash
-    docker exec -it service-php bash
+    docker exec -it api bash
 ```
 
-E rode o seguinte comando
+Antes de tudo precisa gerar o APP KEY do Laravel para isso esteja dentro do container e execute
+
+```bash
+    php artisan key:generate
+```
+
+E logo após rode o seguinte comando
 
 ```bash
     php artisan migrate
 ```
 
 Isso vai rodar as migrações do banco.
-
-Agora no ambiente web **(front)** você precisara copiar o .env.example e colocar a seguinte variavel
-
-`VITE_API_URL="http://localhost:8000/api"`
-
-Com tudo isso pronto, você já estará rodando seu ambiente 100% 😎
-
-Agora basta entrar em http://localhost:5173/
 
 ## Stack utilizada
 

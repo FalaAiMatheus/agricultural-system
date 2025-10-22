@@ -56,20 +56,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=composer/composer:2-bin /composer /usr/bin/composer  
 
+WORKDIR /var/www/html/api
+
+COPY ./api ./
+
+RUN composer install
+
 RUN export NVM_DIR="$HOME/.nvm" && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash && \
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
     nvm install 22 && \
     nvm alias default 22 && \
     nvm use default
-
-WORKDIR /var/www/html/api
-
-COPY ./api/composer.json ./api/composer.lock ./
-
-COPY ./api ./
-
-RUN composer install
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
